@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template
 import psutil
 import socket
 import platform
@@ -58,6 +58,25 @@ def system_info():
         "memory_percent": memory.percent,
         "disk_percent": disk.percent
     })
+
+@app.route("/dashboard")
+def dashboard():
+
+    memory = psutil.virtual_memory()
+    disk = psutil.disk_usage('/')
+
+    data = {
+        "hostname": socket.gethostname(),
+        "os": platform.system(),
+        "cpu": psutil.cpu_percent(interval=1),
+        "memory": memory.percent,
+        "disk": disk.percent
+    }
+
+    return render_template(
+        "dashboard.html",
+        data=data
+    )
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
