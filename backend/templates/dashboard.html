@@ -1,28 +1,57 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>CloudOps Dashboard</title>
+
+<title>CloudOps Dashboard</title>
+
+<style>
+
+body{
+    font-family: Arial;
+    background:#f4f6f9;
+    margin:40px;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    margin-bottom:15px;
+    border-radius:10px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.1);
+}
+
+</style>
+
 </head>
+
 <body>
 
-    <h1>CloudOps Playground</h1>
+<h1>CloudOps Monitoring Dashboard</h1>
 
-    <hr>
-
+<div class="card">
     <h3>Hostname</h3>
     <p>{{ data.hostname }}</p>
+</div>
 
+<div class="card">
     <h3>Operating System</h3>
     <p>{{ data.os }}</p>
+</div>
 
+<div class="card">
     <h3>CPU Usage</h3>
     <p>{{ data.cpu }}%</p>
+</div>
 
+<div class="card">
     <h3>Memory Usage</h3>
     <p>{{ data.memory }}%</p>
+</div>
 
+<div class="card">
     <h3>Disk Usage</h3>
     <p>{{ data.disk }}%</p>
+</div>
 
 </body>
 </html>
