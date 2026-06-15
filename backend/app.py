@@ -46,6 +46,24 @@ def disk_usage():
         "percent": disk.percent
     })
 
+
+@app.route("/db-health")
+def db_health():
+
+    try:
+        test_connection()
+
+        return {
+            "database": "connected"
+        }
+
+    except Exception as e:
+
+        return {
+            "database": "failed",
+            "error": str(e)
+        }
+
 @app.route("/api/system")
 def system_info():
     memory = psutil.virtual_memory()
