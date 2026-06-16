@@ -4,20 +4,24 @@
 
 <title>CloudOps Dashboard</title>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <style>
 
 body{
     font-family: Arial;
-    background:#f4f6f9;
-    margin:40px;
+    margin:30px;
 }
 
 .card{
-    background:white;
+    border:1px solid #ddd;
     padding:20px;
-    margin-bottom:15px;
-    border-radius:10px;
-    box-shadow:0 2px 8px rgba(0,0,0,0.1);
+    width:200px;
+}
+
+.container{
+    display:flex;
+    gap:20px;
 }
 
 </style>
@@ -28,30 +32,78 @@ body{
 
 <h1>CloudOps Monitoring Dashboard</h1>
 
+<div class="container">
+
 <div class="card">
-    <h3>Hostname</h3>
-    <p>{{ data.hostname }}</p>
+<h2>CPU</h2>
+<p id="cpu">0%</p>
 </div>
 
 <div class="card">
-    <h3>Operating System</h3>
-    <p>{{ data.os }}</p>
+<h2>Memory</h2>
+<p id="memory">0%</p>
 </div>
 
 <div class="card">
-    <h3>CPU Usage</h3>
-    <p>{{ data.cpu }}%</p>
+<h2>Disk</h2>
+<p id="disk">0%</p>
 </div>
 
-<div class="card">
-    <h3>Memory Usage</h3>
-    <p>{{ data.memory }}%</p>
 </div>
 
-<div class="card">
-    <h3>Disk Usage</h3>
-    <p>{{ data.disk }}%</p>
-</div>
+<br>
+
+<canvas id="cpuChart"></canvas>
+
+<script>
+
+let cpuData = [];
+
+const ctx = document.getElementById('cpuChart');
+
+const cpuChart = new Chart(ctx,{
+    type:'line',
+    data:{
+        labels:[],
+        datasets:[{
+            label:'CPU Usage',
+            data:[]
+        }]
+    }
+});
+
+async function loadMetrics(){
+
+    const response = await fetch('/api/metrics');
+
+    const data = await response.json();
+
+    document.getElementById('cpu').innerText =
+        data.cpu + "%";
+
+    document.getElementById('memory').innerText =
+        data.memory + "%";
+
+    document.getElementById('disk').innerText =
+        data.disk + "%";
+
+    cpuChart.data.labels.push('');
+
+    cpuChart.data.datasets[0].data.push(data.cpu);
+
+    if(cpuChart.data.labels.length > 20){
+
+        cpuChart.data.labels.shift();
+
+        cpuChart.data.datasets[0].data.shift();
+    }
+
+    cpuChart.update();
+}
+
+setInterval(loadMetrics,2000);
+
+</script>
 
 </body>
 </html>
