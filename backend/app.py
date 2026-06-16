@@ -46,6 +46,18 @@ def disk_usage():
         "percent": disk.percent
     })
 
+@app.route("/api/metrics")
+def metrics():
+
+    memory = psutil.virtual_memory()
+    disk = psutil.disk_usage('/')
+
+    return jsonify({
+        "cpu": psutil.cpu_percent(interval=1),
+        "memory": memory.percent,
+        "disk": disk.percent
+    })
+
 
 @app.route("/db-health")
 def db_health():
