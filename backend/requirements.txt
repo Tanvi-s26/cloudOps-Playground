@@ -1,3 +1,5 @@
 flask
 psutil
 psycopg2-binary
+prometheus-client
+pip freeze > requirements.txt
