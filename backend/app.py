@@ -1,3 +1,6 @@
+from prometheus_client import Counter
+from prometheus_client import generate_latest
+from prometheus_client import CONTENT_TYPE_LATEST
 from flask import Flask, jsonify, render_template
 import psutil
 import socket
