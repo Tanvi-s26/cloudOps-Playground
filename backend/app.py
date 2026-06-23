@@ -5,6 +5,7 @@ from flask import Flask, jsonify, render_template
 import psutil
 import socket
 import platform
+from prometheus_client import Gauge
 
 app = Flask(__name__)
 
